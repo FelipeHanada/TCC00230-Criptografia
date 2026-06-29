@@ -57,22 +57,20 @@ T el_gamal_decrypt(const Group<T>& grp, ElGamalEncryptedMessage<T> e, const U& x
 
 template<typename T, typename U>
 void el_gamal_demo(const Group<T>& grp, const T& g, const U& a, const U& b, const T& m) {
-    T kA = el_gamal_public_key(grp, g, a);
     T kB = el_gamal_public_key(grp, g, b);
 
-    ElGamalEncryptedMessage e = el_gamal_encrypt(grp, g, kA, b, m);
-    T d = el_gamal_decrypt(grp, e, a);
+    ElGamalEncryptedMessage e = el_gamal_encrypt(grp, g, kB, a, m);
+    T d = el_gamal_decrypt(grp, e, b);
 
-    std::cout << "[ EL GAMAL DEMO ]\n";
-    std::cout << std::setw(10) << "(public) " << "g = " << g << "\n";
-    std::cout << std::setw(10) << "(Alice) " << "private key Alice: " << a << "\n";
-    std::cout << std::setw(10) << "(public) " << "public key Alice: " << kA << "\n";
-    std::cout << std::setw(10) << "(Bob) " << "private key Bob: " << b << "\n";
-    std::cout << std::setw(10) << "(public) " << "public key Bob: " << kB << "\n";
-    std::cout << std::setw(10) << "(Alice) " << "message: " << m << '\n';
-    std::cout << std::setw(10) << "(public) " << "encrypted c1: " << e.c1 << '\n';
-    std::cout << std::setw(10) << "(public) " << "encrypted c2: " << e.c2 << '\n';
-    std::cout << std::setw(10) << "(Bob) " << "decrypted: " << d << '\n';
+    std::cout << "[ EL GAMAL DEMO - Alice enviando mensagem para Bob ]\n";
+    std::cout << std::setw(10) << "(public) " << "g = " << g << " (gerador)\n";
+    std::cout << std::setw(10) << "(Alice) " << "private key Alice: x = " << a << "\n";
+    std::cout << std::setw(10) << "(Bob) " << "private key Bob: y = " << b << "\n";
+    std::cout << std::setw(10) << "(public) " << "public key Bob: B = " << kB << " (g^y)\n";
+    std::cout << std::setw(10) << "(Alice) " << "message: M = " << m << '\n';
+    std::cout << std::setw(10) << "(public) " << "encrypted c1: " << e.c1 << " (g^x)\n";
+    std::cout << std::setw(10) << "(public) " << "encrypted c2: " << e.c2 << " (M*B^x)\n";
+    std::cout << std::setw(10) << "(Bob) " << "decrypted: " << d << " (c2 * inv(c1^y))\n";
     std::cout << "resultado: " << (m == d ? "SUCESSO" : "FRACASSO") << '\n';
 }
 
